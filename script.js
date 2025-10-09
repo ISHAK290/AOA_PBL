@@ -1,112 +1,108 @@
-// Exam Seating Arrangement Optimizer
-// Simple version without advanced programming
+// Algorithm: Greedy Allocation
+// It sequentially assigns students to halls until all are allocated or hall capacities are filled.
 
-// Step 1: Input data
-let students = 600;
-let halls = [
-  { name: "Hall A", capacity: 80, available: true },
-  { name: "Hall B", capacity: 50, available: true },
-  { name: "Hall C", capacity: 70, available: true },
-  { name: "Hall D", capacity: 60, available: true },
-  { name: "Hall E", capacity: 40, available: true },
-  { name: "Hall F", capacity: 90, available: true },
-  { name: "Hall G", capacity: 50, available: true },
-  { name: "Hall H", capacity: 70, available: true },
-  { name: "Hall I", capacity: 45, available: true },
-  { name: "Hall J", capacity: 45, available: true }
-];
+const totalStudents = 600;
+let halls = [];
 
-// Step 2: Function to create initial seating plan (Batchwise allocation)
-function createSeatingPlan() {
-  let rollNo = 1;
-  let plan = [];
+// Generate hall input cards dynamically
+for (let i = 1; i <= 10; i++) {
+  const div = document.createElement("div");
+  div.className = "hall-card";
+  div.innerHTML = `
+    <h3>🏫 Hall ${i}</h3>
+    <label>Capacity</label>
+    <input type="number" id="hall${i}" value="${50 + i * 5}">
+  `;
+  document.getElementById("hallInputs").appendChild(div);
+}
 
-  for (let i = 0; i < halls.length; i++) {
-    if (!halls[i].available) continue; // Skip unavailable halls
-
-    let count = 0;
-    let hallList = [];
-
-    while (count < halls[i].capacity && rollNo <= students) {
-      hallList.push("Student " + rollNo);
-      rollNo++;
-      count++;
-    }
-
-    plan.push({
-      hall: halls[i].name,
-      students: hallList
+// --- Main Allocation Function (Greedy Approach) ---
+function generateSeatingPlan() {
+  halls = [];
+  // Step 1: Collect hall capacities
+  for (let i = 1; i <= 10; i++) {
+    halls.push({
+      id: i,
+      capacity: parseInt(document.getElementById(`hall${i}`).value),
+      students: []
     });
   }
 
-  return plan;
-}
+  // Step 2: Validate total capacity
+  const totalCapacity = halls.reduce((sum, h) => sum + h.capacity, 0);
+  if (totalCapacity < totalStudents) {
+    alert("Total capacity is less than 600 students! Increase capacities.");
+    return;
+  }
 
-// Step 3: Function to handle reallocation if a hall fails
-function reallocate(plan, failedHall) {
-  console.log("\n⚠️ Hall " + failedHall + " is now unavailable! Reallocating...\n");
-  
-  // Mark hall as unavailable
-  for (let i = 0; i < halls.length; i++) {
-    if (halls[i].name === failedHall) {
-      halls[i].available = false;
-      break;
+  // Step 3: Greedy Allocation
+  let studentId = 1;
+  for (let hall of halls) {
+    // Fill each hall until capacity or students run out
+    for (let i = 0; i < hall.capacity && studentId <= totalStudents; i++) {
+      hall.students.push(`S${String(studentId).padStart(3, "0")}`);
+      studentId++;
     }
   }
 
-  // Find all students from failed hall
-  let reassign = [];
-  for (let i = 0; i < plan.length; i++) {
-    if (plan[i].hall === failedHall) {
-      reassign = plan[i].students;
-      plan.splice(i, 1);
-      break;
+  // Step 4: Display Result
+  displaySeatingPlan("Seating Plan Generated ✅ (Greedy Allocation)");
+}
+
+// --- Display Seating Plan ---
+function displaySeatingPlan(message) {
+  const tableBody = document.getElementById("seatingTable");
+  const output = document.getElementById("output");
+  const summary = document.getElementById("summary");
+  tableBody.innerHTML = "";
+
+  // Fill table rows
+  halls.forEach(hall => {
+    hall.students.forEach(stu => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${stu}</td>
+        <td>Hall ${hall.id}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  });
+
+  // Summary info
+  const unused = halls.reduce((sum, h) => sum + Math.max(0, h.capacity - h.students.length), 0);
+  summary.innerText = `${message} | Total Students: ${totalStudents} | Halls: ${halls.length} | Unused Seats: ${unused}`;
+  output.classList.remove("hidden");
+}
+
+// --- Handle Hall Unavailability ---
+function markHallUnavailable() {
+  if (halls.length === 0) {
+    alert("Generate the seating plan first!");
+    return;
+  }
+
+  // Randomly make one hall unavailable
+  const unavailableIndex = Math.floor(Math.random() * halls.length);
+  const unavailableHall = halls[unavailableIndex];
+  alert(`Hall ${unavailableHall.id} is now unavailable! Reallocating students...`);
+
+  // Combine students from unavailable hall with others
+  const remainingStudents = halls
+    .filter((_, i) => i !== unavailableIndex)
+    .reduce((all, h) => all.concat(h.students), [])
+    .concat(unavailableHall.students);
+
+  halls.splice(unavailableIndex, 1);
+
+  // Reallocate greedily to remaining halls
+  halls.forEach(h => (h.students = []));
+  let studentIndex = 0;
+  for (let hall of halls) {
+    for (let i = 0; i < hall.capacity && studentIndex < remainingStudents.length; i++) {
+      hall.students.push(remainingStudents[studentIndex]);
+      studentIndex++;
     }
   }
 
-  // Reassign them to remaining available halls
-  for (let i = 0; i < plan.length; i++) {
-    for (let j = 0; j < reassign.length; j++) {
-      if (plan[i].students.length < getCapacity(plan[i].hall)) {
-        plan[i].students.push(reassign[j]);
-        reassign.splice(j, 1);
-        j--;
-      }
-      if (reassign.length === 0) break;
-    }
-  }
-
-  if (reassign.length > 0) {
-    console.log("⚠️ Not enough seats! " + reassign.length + " students unassigned.");
-  }
-
-  return plan;
+  displaySeatingPlan(`Reallocated after Hall ${unavailableHall.id} Unavailability ⚠️ (Greedy)`);
 }
-
-// Step 4: Helper function to get hall capacity
-function getCapacity(hallName) {
-  for (let i = 0; i < halls.length; i++) {
-    if (halls[i].name === hallName) {
-      return halls[i].capacity;
-    }
-  }
-  return 0;
-}
-
-// Step 5: Display function
-function displayPlan(plan) {
-  for (let i = 0; i < plan.length; i++) {
-    console.log(plan[i].hall + ": " + plan[i].students.length + " students");
-  }
-}
-
-// Run the program
-console.log("🏫 Initial Seating Plan:\n");
-let plan = createSeatingPlan();
-displayPlan(plan);
-
-// Simulate a hall failure
-plan = reallocate(plan, "Hall F");
-
-console.log("\n✅ Updated Seating Plan:\n");
-displayPlan(plan);

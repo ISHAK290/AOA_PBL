@@ -1,0 +1,380 @@
+/* General Layout */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom right, #e0f2fe, #e0e7ff, #ede9fe);
+  min-height: 100vh;
+  margin: 0;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Titles */
+h1 {
+  color: #4338ca;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.subtitle {
+  color: #4b5563;
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Container */
+.container {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 900px;
+}
+
+.container h2 {
+  text-align: center;
+  color: #4338ca;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+
+/* Hall Inputs */
+.hall-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.hall-card {
+  background: #eef2ff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hall-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hall-card h3 {
+  color: #4338ca;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.hall-card label {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.hall-card input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.hall-card input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 4px #a5b4fc;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (min-width: 600px) {
+  .button-group {
+    flex-direction: row;
+  }
+}
+
+.btn {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn.primary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn.primary:hover {
+  background: #4338ca;
+}
+
+.btn.danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #dc2626;
+}
+
+/* Output Section */
+.output {
+  background: rgba(255, 255, 255, 0.9);
+  margin-top: 30px;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  max-width: 1100px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.output-header h2 {
+  color: #4338ca;
+  font-size: 1.5rem;
+}
+
+.output-header p {
+  color: #374151;
+  font-weight: 600;
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  max-height: 500px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+}
+
+th {
+  background: #e0e7ff;
+  color: #4338ca;
+  position: sticky;
+  top: 0;
+}
+
+tr:hover {
+  background-color: #eef2ff;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* 🌙 Dark Mode Styles */
+body.dark-mode {
+    background: linear-gradient(to bottom right, #0f172a, #1e293b, #334155);
+    color: #e2e8f0;
+  }
+  
+  body.dark-mode .container,
+  body.dark-mode .output {
+    background: rgba(30, 41, 59, 0.9);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  }
+  
+  body.dark-mode h1,
+  body.dark-mode h2 {
+    color: #a5b4fc;
+  }
+  
+  body.dark-mode .subtitle {
+    color: #94a3b8;
+  }
+  
+  body.dark-mode .hall-card {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+  
+  body.dark-mode .hall-card input {
+    background: #334155;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+  }
+  
+  body.dark-mode .btn.primary {
+    background: #6366f1;
+  }
+  
+  body.dark-mode .btn.danger {
+    background: #ef4444;
+  }
+  
+  body.dark-mode th {
+    background: #475569;
+    color: #e0e7ff;
+  }
+  
+  body.dark-mode tr:hover {
+    background-color: #334155;
+  }
+  
+  /* 🌗 Toggle Button */
+  .theme-toggle {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .theme-toggle:hover {
+    background: #4338ca;
+  }
+/* From Uiverse.io by mrhyddenn */ 
+/* The switch - the box around the slider */
+.switch {
+ font-size: 17px;
+ position: relative;
+ display: inline-block;
+ width: 62px;
+ height: 35px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+ opacity: 1;
+ width: 0;
+ height: 0;
+}
+
+/* The slider */
+.slider {
+ position: absolute;
+ cursor: pointer;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0px;
+ background: #fff;
+ transition: .4s;
+ border-radius: 30px;
+ border: 1px solid #ccc;
+}
+
+.slider:before {
+ position: absolute;
+ content: "";
+ height: 1.9em;
+ width: 1.9em;
+ border-radius: 16px;
+ left: 1.2px;
+ top: 0;
+ bottom: 0;
+ background-color: white;
+ box-shadow: 0 2px 5px #999999;
+ transition: .4s;
+}
+
+input:checked + .slider {
+ background-color: #5fdd54;
+ border: 1px solid transparent;
+}
+
+input:checked + .slider:before {
+ transform: translateX(1.5em);
+}
+/* From Uiverse.io by mrhyddenn */
+/* The switch - the box around the slider */
+.switch {
+    font-size: 17px;
+    position: fixed;       /* fixed to viewport */
+    top: 20px;             /* distance from top */
+    left: 20px;            /* distance from left */
+    z-index: 9999;         /* above other elements */
+    display: inline-block;
+    width: 62px;
+    height: 35px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 1;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    background: #fff;
+    transition: .4s;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.9em;
+    width: 1.9em;
+    border-radius: 16px;
+    left: 1.2px;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 2px 5px #999999;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #5fdd54;
+    border: 1px solid transparent;
+}
+
+input:checked + .slider:before {
+    transform: translateX(1.5em);
+}
