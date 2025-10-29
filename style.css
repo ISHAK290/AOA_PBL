@@ -545,6 +545,19 @@ input:checked + .slider:before {
 
 
 
+.btn.warning {
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+.btn.warning:hover {
+  background-color: #ffca2c;
+  transform: scale(1.05);
+}
 
 
 

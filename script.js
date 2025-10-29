@@ -135,7 +135,6 @@ function generateSeatingPlan() {
     const hallCap = hall.capacity;
     const half = Math.floor(hallCap / 2);
 
-    // Take students for two subjects equally if available
     const takeA = subjectMap[subA]?.splice(0, half) || [];
     const takeB = subB ? subjectMap[subB]?.splice(0, hallCap - takeA.length) || [] : [];
 
@@ -143,7 +142,7 @@ function generateSeatingPlan() {
     currentPair = (currentPair + 1) % subjectPairs.length;
   }
 
-  displaySeatingPlan("Seating Plan Generated ✅ (2 Subjects per Hall + CSV/Manual Input)");
+  displaySeatingPlan("Seating Plan Generated ✅");
 }
 
 // --- Display seating plan ---
@@ -179,7 +178,35 @@ function markHallUnavailable() {
 
   const unavailableIndex = Math.floor(Math.random() * halls.length);
   const unavailableHall = halls[unavailableIndex];
-  alert(`Hall ${unavailableHall.id} is now unavailable! Reallocating students...`);
+  reallocateStudents(unavailableHall.id, `Randomly marked Hall ${unavailableHall.id} unavailable ⚠️`);
+}
+
+// --- Handle manual hall unavailability ---
+function markSpecificHallUnavailable() {
+  if (halls.length === 0) {
+    alert("Generate the seating plan first!");
+    return;
+  }
+
+  const hallNum = parseInt(prompt("Enter Hall number to mark unavailable (1–10):"));
+  if (isNaN(hallNum) || hallNum < 1 || hallNum > halls.length) {
+    alert("❌ Invalid hall number!");
+    return;
+  }
+
+  const unavailableHall = halls.find(h => h.id === hallNum);
+  if (!unavailableHall) {
+    alert("❌ Hall not found!");
+    return;
+  }
+
+  reallocateStudents(hallNum, `Hall ${hallNum} manually marked unavailable ⚠️`);
+}
+
+// --- Common function for reallocation ---
+function reallocateStudents(hallId, message) {
+  const unavailableIndex = halls.findIndex(h => h.id === hallId);
+  const unavailableHall = halls[unavailableIndex];
 
   const remainingStudents = halls
     .filter((_, i) => i !== unavailableIndex)
@@ -197,9 +224,5 @@ function markHallUnavailable() {
     }
   }
 
-  displaySeatingPlan(`Reallocated after Hall ${unavailableHall.id} Unavailability ⚠️ (Greedy)`);
+  displaySeatingPlan(`${message} → Students Reallocated (Greedy)`);
 }
-
-
-
-
